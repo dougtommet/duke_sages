@@ -1,0 +1,71 @@
+
+
+```{r}
+freq.gcp <- readRDS(file=fs::path(r_objects, "050_freq.gcp.rds"))
+freq.cci <- readRDS(file=fs::path(r_objects, "050_freq.cci.rds"))
+
+gcp_to_cci <- readRDS(file=fs::path(r_objects, "050_gcp_to_cci.rds"))
+cci_to_gcp <- readRDS(file=fs::path(r_objects, "050_cci_to_gcp.rds"))
+gcp_to_cci_df <- readRDS(file=fs::path(r_objects, "050_gcp_to_cci_df.rds"))
+cci_to_gcp_df <- readRDS(file=fs::path(r_objects, "050_cci_to_gcp_df.rds"))
+
+
+```
+
+```{r}
+# plot(x = freq.gcp, lwd = 2, xlab = "Score", ylab = "Count")  
+# plot(x = freq.cci, lwd = 2, xlab = "Score", ylab = "Count")  
+
+```
+
+# GCP to CCI
+
+```{r}
+print(gcp_to_cci)
+```
+
+```{r}
+#| fig-cap: "GCP equated to CCI"
+
+gcp_to_cci_df %>%
+  ggplot(aes(x = gcp, y = equivalent_cci)) +
+    geom_point() +
+    hrbrthemes::theme_ipsum()
+
+```
+
+```{r}
+#| tbl-cap: "GCP equated to CCI"
+
+gcp_to_cci_df %>%
+  select(-se) %>%
+  gt::gt() %>%
+  gt::fmt_number(equivalent_cci, decimals = 2)
+
+```
+
+# CCI to GCP
+
+```{r}
+print(cci_to_gcp)
+```
+
+```{r}
+#| fig-cap: "CCI equated to GCP"
+
+cci_to_gcp_df %>%
+  ggplot(aes(x = cci, y = equivalent_gcp)) +
+    geom_point() +
+    hrbrthemes::theme_ipsum()
+
+```
+
+```{r}
+#| tbl-cap: "CCI equated to GCP"
+
+cci_to_gcp_df %>%
+  select(-se) %>%
+  gt::gt() %>%
+  gt::fmt_number(equivalent_gcp, decimals = 2)
+
+```

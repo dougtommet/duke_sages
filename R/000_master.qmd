@@ -1,0 +1,34 @@
+---
+title: "Equipercentile equating GCP and CCI"
+author: "Doug Tommet"
+date: '`r Sys.Date()`'
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    self-contained: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+
+```{r}
+source(here::here("R", "001_libraries.R"))
+source(here::here("R", "002_folder_paths.R"))
+
+```
+
+
+```{r}
+
+# source(here::here("R", "010_read_data.R"))
+source(here::here("R", "050_equating.R"))
+
+```
+
+{{< include _010_read_data.qmd >}}
+
+{{< include _050_equating.qmd >}}
+

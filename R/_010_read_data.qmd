@@ -1,0 +1,29 @@
+
+
+# Data
+
+The SAGES data comes from the `SAGES-Subject-Interview-Data-Analysis-File.dta` file. It uses the GCP score from all waves.
+
+```{r}
+sagesI_df %>%
+  select(vdgcp2023_rta) %>%
+  gtsummary::tbl_summary(
+    statistic = list(
+      gtsummary::all_continuous() ~ "{mean} ({sd})",
+      gtsummary::all_categorical() ~ "{n} / {N} ({p}%)"
+    )
+  )
+```
+
+The Duke data comes fromt the file `MADCOPC_INTUIT_DukeCCI.xlsx` file. It uses the CCI score from both time points.
+
+```{r}
+intuit_df %>%
+  select(Duke_CCI) %>%
+  gtsummary::tbl_summary(
+    statistic = list(
+      gtsummary::all_continuous() ~ "{mean} ({sd})",
+      gtsummary::all_categorical() ~ "{n} / {N} ({p}%)"
+    )
+  )
+```
