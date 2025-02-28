@@ -1,8 +1,8 @@
 
-sagesI_df <- readRDS(file=fs::path(r_objects, "010_sagesI_df.rds"))
+# sagesI_df <- readRDS(file=fs::path(r_objects, "010_sagesI_df.rds"))
 intuit_df <- readRDS(file=fs::path(r_objects, "010_intuit_df.rds"))
 
-freq.gcp <- freqtab(round(sagesI_df$vdgcp2023_rta))
+freq.gcp <- freqtab(round(intuit_df$gcp))
 freq.cci <- freqtab(round(intuit_df$Duke_CCI*10))
 
 

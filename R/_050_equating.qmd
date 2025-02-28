@@ -1,6 +1,8 @@
 
 
 ```{r}
+intuit_df <- readRDS(file=fs::path(r_objects, "010_intuit_df.rds"))
+
 freq.gcp <- readRDS(file=fs::path(r_objects, "050_freq.gcp.rds"))
 freq.cci <- readRDS(file=fs::path(r_objects, "050_freq.cci.rds"))
 
@@ -18,6 +20,57 @@ cci_to_gcp_df <- readRDS(file=fs::path(r_objects, "050_cci_to_gcp_df.rds"))
 
 ```
 
+```{r}
+#| fig-cap: "Equipercentile equating between CCI and GCP"
+#| fig-subcap: "Arrows demostrate how a CCI score of 0.5 is equated to a GCP score of 65"
+#| fig-cap-location: top
+#| label: fig-equiplot
+
+# intuit_df %>%
+#   mutate(gcp_prank = percent_rank(gcp),
+#          cci_prank = percent_rank(Duke_CCI)) %>%
+#   ggplot() +
+#     geom_line(aes(x=Duke_CCI, y = cci_prank), color = "blue") +
+#     geom_line(aes(x = g, y = gcp_prank), color = "red") +
+#     hrbrthemes::theme_ipsum() +
+#     scale_x_continuous("CCI", sec.axis = sec_axis(~ .*10+50, name = "GCP", 
+#                                                   breaks = c(20, 30, 40, 50, 60, 70, 80),
+#                                                   labels = c(20, 30, 40, 50, 60, 70, 80)
+#                        )) +
+#     scale_y_continuous("Percentile rank") +
+#     geom_segment(aes(x = .5, y = 0, xend = .5, yend = .75), arrow = arrow()) +
+#     geom_segment(aes(x = .5, y = .75, xend = 1.5, yend = .75), arrow = arrow()) + 
+#     geom_segment(aes(x = 1.5, y = .75, xend = 1.5, yend = 1), arrow = arrow()) 
+
+
+
+intuit_df %>%
+  mutate(gcp_prank = percent_rank(gcp),
+         cci_prank = percent_rank(Duke_CCI),
+         id = row_number()) %>%
+  select(id, Duke_CCI, g, cci_prank, gcp_prank) %>%
+  pivot_longer(cols = 2:5, names_to = "n", values_to = "v") %>%
+  mutate(test = case_when(str_detect(n, regex("cci", ignore_case=TRUE)) ~ "CCI",
+                          str_detect(n, regex("g", ignore_case=TRUE)) ~ "GCP"),
+         prank = case_when(str_detect(n, regex("prank", ignore_case=TRUE)) ~ "Prank",
+                           TRUE ~ "Value")
+  ) %>%
+  select(-n) %>%
+  pivot_wider(values_from = v, names_from = prank) %>%
+  ggplot(aes(x = Value, y = Prank, color = test)) +
+    geom_line() +
+    hrbrthemes::theme_ipsum() +
+    scale_x_continuous("CCI", sec.axis = sec_axis(~ .*10+50, name = "GCP", 
+                                                  breaks = c(20, 30, 40, 50, 60, 70, 80),
+                                                  labels = c(20, 30, 40, 50, 60, 70, 80)
+                       )) +
+    scale_y_continuous("Percentile rank") +
+    scale_color_manual("Test", values=c("blue", "red")) +
+    geom_segment(aes(x = .5, y = 0, xend = .5, yend = .75), arrow = arrow(), color="black") +
+    geom_segment(aes(x = .5, y = .75, xend = 1.5, yend = .75), arrow = arrow(), color="black") + 
+    geom_segment(aes(x = 1.5, y = .75, xend = 1.5, yend = 1), arrow = arrow(), color="black") 
+``` 
+
 # GCP to CCI
 
 ```{r}
@@ -26,6 +79,7 @@ print(gcp_to_cci)
 
 ```{r}
 #| fig-cap: "GCP equated to CCI"
+#| label: fig-gcp-to-cci
 
 gcp_to_cci_df %>%
   ggplot(aes(x = gcp, y = equivalent_cci)) +
@@ -36,6 +90,7 @@ gcp_to_cci_df %>%
 
 ```{r}
 #| tbl-cap: "GCP equated to CCI"
+#| label: tbl-gcp-to-cci
 
 gcp_to_cci_df %>%
   select(-se) %>%
@@ -52,6 +107,7 @@ print(cci_to_gcp)
 
 ```{r}
 #| fig-cap: "CCI equated to GCP"
+#| label: fig-cci-to-gcp
 
 cci_to_gcp_df %>%
   ggplot(aes(x = cci, y = equivalent_gcp)) +
@@ -62,6 +118,7 @@ cci_to_gcp_df %>%
 
 ```{r}
 #| tbl-cap: "CCI equated to GCP"
+#| label: tbl-cci-to-gcp
 
 cci_to_gcp_df %>%
   select(-se) %>%

@@ -2,11 +2,17 @@
 
 # Data
 
-The SAGES data comes from the `SAGES-Subject-Interview-Data-Analysis-File.dta` file. It uses the GCP score from all waves.
+
+The CCI data comes from the file `MADCOPC_INTUIT_DukeCCI.xlsx` file. The GCP data comes from the data harmonization project and is in the file `intuit_gcp.csv`.
+
+The equipercentile equating uses the scores from both time points.
 
 ```{r}
-sagesI_df %>%
-  select(vdgcp2023_rta) %>%
+#| tbl-cap: "Descriptive statistics of GCP and CCI in Intuit/MADCOPC"
+#| label: tbl-desc
+
+intuit_df %>%
+  select(Duke_CCI, gcp) %>%
   gtsummary::tbl_summary(
     statistic = list(
       gtsummary::all_continuous() ~ "{mean} ({sd})",
@@ -15,15 +21,15 @@ sagesI_df %>%
   )
 ```
 
-The Duke data comes fromt the file `MADCOPC_INTUIT_DukeCCI.xlsx` file. It uses the CCI score from both time points.
 
 ```{r}
+#| fig-cap: "GCP vs CCI in Intuit/MADCOPC"
+#| label: fig-scatterplot
+
 intuit_df %>%
-  select(Duke_CCI) %>%
-  gtsummary::tbl_summary(
-    statistic = list(
-      gtsummary::all_continuous() ~ "{mean} ({sd})",
-      gtsummary::all_categorical() ~ "{n} / {N} ({p}%)"
-    )
-  )
+  ggplot(aes(x = Duke_CCI, y = gcp)) +
+  geom_point() +
+  scale_x_continuous("CCI") +
+  scale_y_continuous("GCP") +
+  hrbrthemes::theme_ipsum()
 ```
