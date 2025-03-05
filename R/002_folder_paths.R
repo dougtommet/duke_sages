@@ -14,5 +14,8 @@ if (!fs::dir_exists(r_objects)) {
 if (!fs::dir_exists(here::here("Reports"))) {
   fs::dir_create(here::here("Reports"))
 }
+if (!fs::dir_exists(here::here("Figures"))) {
+  fs::dir_create(here::here("Figures"))
+}
 
 

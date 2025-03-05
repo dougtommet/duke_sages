@@ -65,10 +65,12 @@ intuit_df %>%
                                                   labels = c(20, 30, 40, 50, 60, 70, 80)
                        )) +
     scale_y_continuous("Percentile rank") +
-    scale_color_manual("Test", values=c("blue", "red")) +
+    scale_color_manual("Composite", values=c("blue", "red")) +
     geom_segment(aes(x = .5, y = 0, xend = .5, yend = .75), arrow = arrow(), color="black") +
     geom_segment(aes(x = .5, y = .75, xend = 1.5, yend = .75), arrow = arrow(), color="black") + 
     geom_segment(aes(x = 1.5, y = .75, xend = 1.5, yend = 1), arrow = arrow(), color="black") 
+
+ggplot2::ggsave(here::here("Figures", "Fig2.pdf"), device = cairo_pdf)
 ``` 
 
 # GCP to CCI
