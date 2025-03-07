@@ -31,5 +31,6 @@ intuit_df %>%
   geom_point() +
   scale_x_continuous("CCI") +
   scale_y_continuous("GCP") +
-  hrbrthemes::theme_ipsum()
+  hrbrthemes::theme_ipsum() +
+  geom_smooth(method = "lm", se=FALSE)
 ```
