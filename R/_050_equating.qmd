@@ -82,8 +82,8 @@ cci_to_gcp_df %>%
          gcp_x = 2, 
          gcp_y = (equivalent_gcp-50)/10,
          x = (cci*10)%% 2,
-         cci_str = str_pad(cci, side = "right", pad = " ", width = 3),
-         gcp_str = round(equivalent_gcp, 1)
+         cci_str = sprintf("%.1f", as.numeric(cci)),
+         gcp_str = sprintf("%.1f", as.numeric(equivalent_gcp))
          ) %>%
   filter(x==0) %>%
   ggplot() +
@@ -96,8 +96,8 @@ cci_to_gcp_df %>%
     scale_x_continuous(limits = c(.5, 2.5)) +
     geom_text(aes(x = cci_x, y = cci, label = cci_str), hjust = 1.2) +
     geom_text(aes(x = gcp_x, y = gcp_y, label = gcp_str), hjust = -.2) +
-    geom_text(aes(x=.8, y = 0, label = "CCI")) +
-    geom_text(aes(x=2.2, y = 0, label = "GCP"))
+    geom_text(aes(x=.8, y = 1, label = "CCI")) +
+    geom_text(aes(x=2.2, y = 1, label = "GCP"))
 ggplot2::ggsave(here::here("Figures", "Fig3.pdf"), device = cairo_pdf)
 ```
 
